@@ -1,0 +1,3 @@
+2017-10-22 15:53:51 WARNING (MainThread) [homeassistant.bootstrap] Python 3.4 support has been deprecated and will be removed in the begining of 2018. Please upgrade Python or your operating system. More info: https://home-assistant.io/blog/2017/10/06/deprecating-python-3.4-support/
+2017-10-22 15:54:04 WARNING (MainThread) [homeassistant.setup] Setup of mqtt is taking over 10 seconds.
+2017-10-22 15:54:04 WARNING (MainThread) [homeassistant.setup] Setup of recorder is taking over 10 seconds.
