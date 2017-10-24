@@ -32,9 +32,11 @@ while True:
     input_state1 = GPIO.input(button1)
     input_state2 = GPIO.input(button2)
     input_state3 = GPIO.input(button3)
-    sendCommand("justanothergeek1", "echo Presence > Presence.txt")
+    # Update presence time
+    # sendCommand("justanothergeek1", "echo Presence > Presence.txt")
 
     if input_state1 == True:
+        
         print('Button 1 Pressed')   # Triggers Alarm
         GPIO.output(rood, GPIO.LOW)
         GPIO.output(geel, GPIO.HIGH)
@@ -43,7 +45,7 @@ while True:
         GPIO.output(rood, GPIO.HIGH)
         GPIO.output(geel, GPIO.LOW)
         GPIO.output(groen, GPIO.LOW)
-        sendCommand("justanothergeek1", "echo Trigger > trigger.txt")
+        sendCommand("justanothergeek1", "triggerAlarm.py")
         print("Alarm Triggerd")
 
     elif input_state2 == True:
@@ -55,8 +57,16 @@ while True:
         GPIO.output(rood, GPIO.HIGH)
         GPIO.output(geel, GPIO.LOW)
         GPIO.output(groen, GPIO.LOW)
-        sendCommand("justanothergeek1", "echo Cleared > Cleared.txt")
-        print("Alarm Cleard")
+        if sendCommand("justanothergeek1", "clearAlarm.py") == False:
+            print("Alarm triggerd")
+            GPIO.output(rood, GPIO.HIGH)
+            GPIO.output(geel, GPIO.LOW)
+            GPIO.output(groen, GPIO.LOW)
+        else:
+            print("Alarm Disarmed")
+            GPIO.output(rood, GPIO.LOW)
+            GPIO.output(geel, GPIO.LOW)
+            GPIO.output(groen, GPIO.HIGH)
 
     elif input_state3 == True:
         print("Button 3 Pressed")   # Clears Alarm
@@ -64,6 +74,14 @@ while True:
         GPIO.output(geel, GPIO.LOW)
         GPIO.output(groen, GPIO.HIGH)
         time.sleep(0.2)
-        sendCommand("justanothergeek1", "echo Disarm > Disarm.txt")
-        print("Alarm Disarmed")
+        if sendCommand("justanothergeek1", "clearAlarm.py") == False:
+            print("Alarm Triggerd")
+            GPIO.output(rood, GPIO.HIGH)
+            GPIO.output(geel, GPIO.LOW)
+            GPIO.output(groen, GPIO.LOW)
+        else:
+            print("Alarm Disarmed")
+            GPIO.output(rood, GPIO.LOW)
+            GPIO.output(geel, GPIO.LOW)
+            GPIO.output(groen, GPIO.HIGH)
 
