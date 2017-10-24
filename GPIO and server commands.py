@@ -1,22 +1,6 @@
 import RPi.GPIO as GPIO
 import time
-import paramiko
-
-def sendcommand(hostname,command):
-    'Sends a command over SSH to a remote host using SSH key authentication'
-    k = paramiko.RSAKey.from_private_key_file("/home/pi/alarmsystem/privatekey.pem")
-    c = paramiko.SSHClient()
-    c.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-
-    print("connecting")
-    c.connect( hostname = hostname, username = "pi", password = "AlarmSystem" )
-    print("connected")
-    print("Executing {}".format( command ))
-    stdin , stdout, stderr = c.exec_command(command)
-    print(stdout.read())
-    print( "Errors")
-    print(stderr.read())
-    c.close()
+from sshconnect import sendCommand
 
 rood = 3
 geel = 5
@@ -48,10 +32,10 @@ while True:
     input_state1 = GPIO.input(button1)
     input_state2 = GPIO.input(button2)
     input_state3 = GPIO.input(button3)
-    sendcommand("justanothergeek1", "echo Presence > Presence.txt")
-    
+    sendCommand("justanothergeek1", "echo Presence > Presence.txt")
+
     if input_state1 == True:
-        print('Button 1 Pressed')
+        print('Button 1 Pressed')   # Triggers Alarm
         GPIO.output(rood, GPIO.LOW)
         GPIO.output(geel, GPIO.HIGH)
         GPIO.output(groen, GPIO.LOW)
@@ -59,10 +43,11 @@ while True:
         GPIO.output(rood, GPIO.HIGH)
         GPIO.output(geel, GPIO.LOW)
         GPIO.output(groen, GPIO.LOW)
-        sendcommand("justanothergeek1", "echo Trigger > trigger.txt")
+        sendCommand("justanothergeek1", "echo Trigger > trigger.txt")
+        print("Alarm Triggerd")
 
     elif input_state2 == True:
-        print('Button 2 Pressed')
+        print('Button 2 Pressed')   # Clears from Danger
         GPIO.output(rood, GPIO.LOW)
         GPIO.output(geel, GPIO.LOW)
         GPIO.output(groen, GPIO.HIGH)       #Slaat deze zonder reden over
@@ -70,12 +55,15 @@ while True:
         GPIO.output(rood, GPIO.HIGH)
         GPIO.output(geel, GPIO.LOW)
         GPIO.output(groen, GPIO.LOW)
+        sendCommand("justanothergeek1", "echo Cleared > Cleared.txt")
+        print("Alarm Cleard")
 
     elif input_state3 == True:
-        print("Button 3 Pressed")
+        print("Button 3 Pressed")   # Clears Alarm
         GPIO.output(rood, GPIO.LOW)
         GPIO.output(geel, GPIO.LOW)
         GPIO.output(groen, GPIO.HIGH)
         time.sleep(0.2)
-        sendcommand("justanothergeek1", "echo Disarm > Disarm.txt")
+        sendCommand("justanothergeek1", "echo Disarm > Disarm.txt")
+        print("Alarm Disarmed")
 
