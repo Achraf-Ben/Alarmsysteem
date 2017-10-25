@@ -80,7 +80,7 @@ while True:
 
         alarmEscaped = False
         while time.time() < timeout_start + timeout:
-            print("loop")
+            input_state3 = GPIO.input(button3)
             if input_state3 == True:
                 print("escape button is pressed!")
                 print("Alarm Disarmed")
@@ -88,7 +88,6 @@ while True:
                 alarmOff(True)
                 time.sleep(1)
                 break
-            time.sleep(2)
 
         if alarmEscaped == False:
             alarmOn()
