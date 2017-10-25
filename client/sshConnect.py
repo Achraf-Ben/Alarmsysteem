@@ -4,7 +4,7 @@ import paramiko
 def sendCommand(hostname,command):
     """Sends a command over SSH to a remote host using SSH key authentication"""
     try:
-        key = paramiko.RSAKey.from_private_key_file("/home/pi/privatekey.pem")
+        key = paramiko.RSAKey.from_private_key_file("/home/pi/.ssh/privatekey.pem")
         sshClient = paramiko.SSHClient()
         sshClient.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         sshClient.connect(hostname=hostname, username="pi", pkey=key)  # Connect to host

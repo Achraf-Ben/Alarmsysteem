@@ -1,6 +1,7 @@
 import RPi.GPIO as GPIO
 import time
-from sshconnect import sendCommand
+from sshConnect import sendCommand
+import datetime
 
 rood = 3
 geel = 5
@@ -45,7 +46,7 @@ while True:
         GPIO.output(rood, GPIO.HIGH)
         GPIO.output(geel, GPIO.LOW)
         GPIO.output(groen, GPIO.LOW)
-        sendCommand("justanothergeek1", "triggerAlarm.py")
+        sendCommand("justanothergeek1", "Alarmsysteem/alarmTrigger.py")
         print("Alarm Triggerd")
 
     elif input_state2 == True:
@@ -53,11 +54,28 @@ while True:
         GPIO.output(rood, GPIO.LOW)
         GPIO.output(geel, GPIO.LOW)
         GPIO.output(groen, GPIO.HIGH)       #Slaat deze zonder reden over
-        time.sleep(5)
+
+        tijd = datetime.datetime.now().strftime("%H:%M:%S")
+        tijd_list = tijd.split(":")
+        tijd_sec = int(int(tijd_list[0]) * 60 * 60 + int(tijd_list[1]) * 60 + int(tijd_list[2]))
+        tijd_sec_goal = tijd_sec + 30
+        while True:
+            tijd_curr = datetime.datetime.now().strftime("%H:%M:%S")
+            tijd_list_curr = tijd.split(":")
+            tijd_sec_curr = int(int(tijd_list[0]) * 60 * 60 + int(tijd_list[1]) * 60 + int(tijd_list[2]))
+            if tijd_sec_curr >= tijd_sec_goal:
+                #TODO: send een melding van alarmTrigger
+                print("tijd is verstreken!")
+                break
+            elif input_state2 == True:
+                print("escape button is pressed!")
+                break
+
+
         GPIO.output(rood, GPIO.HIGH)
         GPIO.output(geel, GPIO.LOW)
         GPIO.output(groen, GPIO.LOW)
-        if sendCommand("justanothergeek1", "clearAlarm.py") == False:
+        if sendCommand("justanothergeek1", "Alarmsysteem/alarmClear.py") == False:
             print("Alarm triggerd")
             GPIO.output(rood, GPIO.HIGH)
             GPIO.output(geel, GPIO.LOW)
@@ -74,7 +92,7 @@ while True:
         GPIO.output(geel, GPIO.LOW)
         GPIO.output(groen, GPIO.HIGH)
         time.sleep(0.2)
-        if sendCommand("justanothergeek1", "clearAlarm.py") == False:
+        if sendCommand("justanothergeek1", "Alarmsysteem/clearAlarm.py") == False:
             print("Alarm Triggerd")
             GPIO.output(rood, GPIO.HIGH)
             GPIO.output(geel, GPIO.LOW)
