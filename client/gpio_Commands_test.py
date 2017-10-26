@@ -30,14 +30,14 @@ GPIO.output(groen, GPIO.HIGH)
 
 
 def alarmOn():
-    if sendCommand("server.pi", "python3 /home/pi/Alarmsysteem/alarmOn.py") == False:
+    if sendCommand("server.pi", "cd Alarmsysteem && python3 /home/pi/Alarmsysteem/alarmOn.py") == False:
         print("Cant connect to server alarm triggerd")
         GPIO.output(rood, GPIO.HIGH)
         GPIO.output(geel, GPIO.LOW)
         GPIO.output(groen, GPIO.LOW)
     else:
         print("Alarm Triggerd")
-        sendCommand("server.pi", "python3 /home/pi/Alarmsysteem/alarmOn.py")
+        sendCommand("server.pi", "cd Alarmsysteem && python3 /home/pi/Alarmsysteem/alarmOn.py")
         GPIO.output(rood, GPIO.HIGH)
         GPIO.output(geel, GPIO.LOW)
         GPIO.output(groen, GPIO.LOW)
@@ -48,7 +48,7 @@ def alarmOff(escape):
     GPIO.output(geel, GPIO.LOW)
     GPIO.output(groen, GPIO.HIGH)
     if escape == False:
-        if sendCommand("server.pi", "python3 /home/pi/Alarmsysteem/alarmOff.py") == False:
+        if sendCommand("server.pi", "cd Alarmsysteem && python3 /home/pi/Alarmsysteem/alarmOff.py") == False:
             print("Alarm Triggerd Server error")
             GPIO.output(rood, GPIO.HIGH)
             GPIO.output(geel, GPIO.LOW)
