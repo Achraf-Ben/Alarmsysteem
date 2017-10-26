@@ -20,6 +20,9 @@ class Window(Frame):                         #creates window
 
         conn.commit()
         conn.close()
+        
+        sendCommand("client.pi", "python3 /home/pi/Alarmsysteem/clientRed.py")
+        
 
     def alarm_Deactivate(self):
         conn = sqlite3.connect("alarm_database")
@@ -33,6 +36,8 @@ class Window(Frame):                         #creates window
 
         conn.commit()
         conn.close()
+        
+        sendCommand("client.pi", "python3 /home/pi/Alarmsysteem/clientGreen.py")
 
 
     def checkDatabase(self):
