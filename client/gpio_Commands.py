@@ -40,16 +40,17 @@ def updateTimeDatabase():
     #update de database elke 20 seconden met de nieuwe tijd
     while True:
         print('updateTimeDatabase, loop')
-        try:
-            sendCommand("server.pi", "cd Alarmsysteem && python3 /home/pi/Alarmsysteem/updateTime.py")
-            eersteMeldingNoConnect = True
-        except:
-            #als dit niet lukt, laat aan de client kant een alarm af gaan
+        if sendCommand("server.pi", "cd Alarmsysteem && python3 /home/pi/Alarmsysteem/updateTime.py") == False:
             if eersteMeldingNoConnect == True:
                 GPIO.output(rood, GPIO.HIGH)
                 GPIO.output(geel, GPIO.LOW)
                 GPIO.output(groen, GPIO.LOW)
                 eersteMeldingNoConnect = False
+
+
+        else:
+            #als dit niet lukt, laat aan de client kant een alarm af gaan
+            eersteMeldingNoConnect = True
         time.sleep(20)
 
 
