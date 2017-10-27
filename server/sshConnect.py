@@ -9,13 +9,14 @@ def sendCommand(hostname,command):
         sshClient.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         sshClient.connect(hostname=hostname, username="pi", pkey=key)  # Connect to host
         stdin,stdout,stderr = sshClient.exec_command(command)  # Runs command
-        print(stdout.read())  # Print shell read out
-        print(stderr.read())  # Print shell errors
+        #print(stdout.read())  # Print shell read out
+		#print(stderr.read())  # Print shell errors
         sshClient.close()
-        executed = "Executed: {}".format(command)
-        return executed
+        #executed = "Executed: {}".format(command)
+        return
     except paramiko.ssh_exception.NoValidConnectionsError:
         print("Connection to the Alarm Server got disrupted, triggering Alarm...")
         return False
     except:
         print("Another error occured please contact support.")
+
